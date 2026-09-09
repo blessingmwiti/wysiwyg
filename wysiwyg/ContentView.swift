@@ -3,11 +3,13 @@ import SwiftUI
 /// The single-popup dashboard: everything in one place.
 struct ContentView: View {
     @ObservedObject var monitor: SystemMonitor
+    @Environment(\.openURL) private var openURL
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 8) {
                 header
+                updateBanner
                 CPUView(snap: monitor.cpu, history: monitor.cpuHistory,
                         logicalCores: monitor.system.logicalCores)
                 MemoryView(snap: monitor.memory, history: monitor.memHistory)
@@ -39,6 +41,29 @@ struct ContentView: View {
                 .lineLimit(2)
         }
         .padding(.horizontal, 2)
+    }
+
+    private var updateBanner: some View {
+        Group {
+            if case .available(let v, let urlString) = monitor.update,
+               monitor.shouldShowUpdate(v) {
+                HStack(spacing: 8) {
+                    Image(systemName: "arrow.down.circle.fill")
+                        .foregroundStyle(.blue)
+                    Text("v\(v) available")
+                        .font(.system(size: 12, weight: .semibold))
+                    Spacer()
+                    Button("Download") {
+                        if let url = URL(string: urlString) { openURL(url) }
+                    }
+                    .buttonStyle(.link).font(.system(size: 12))
+                    Button("Later") { monitor.skipUpdate(v) }
+                    .buttonStyle(.link).font(.system(size: 12))
+                }
+                .padding(8)
+                .background(.blue.opacity(0.12), in: RoundedRectangle(cornerRadius: 8))
+            }
+        }
     }
 
     private var footer: some View {

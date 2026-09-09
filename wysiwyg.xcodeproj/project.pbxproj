@@ -30,6 +30,7 @@
 		A1B2C3D4B021000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F021000000000001; };
 		A1B2C3D4B022000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F022000000000001; };
 		A1B2C3D4B023000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F023000000000001; };
+		A1B2C3D4B026000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F028000000000001; };
 		A1B2C3D4B024000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F026000000000001; };
 		A1B2C3D4B025000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F027000000000001; };
 /* End PBXBuildFile section */
@@ -62,6 +63,7 @@
 		A1B2C3D4F025000000000001 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wysiwyg.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1B2C3D4F026000000000001 = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		A1B2C3D4F027000000000001 = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A1B2C3D4F028000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				A1B2C3D4F010000000000001,
 				A1B2C3D4F011000000000001,
 				A1B2C3D4F012000000000001,
+				A1B2C3D4F028000000000001,
 			);
 			name = Monitors;
 			path = Monitors;
@@ -252,6 +255,7 @@
 				A1B2C3D4B019000000000001,
 				A1B2C3D4B020000000000001,
 				A1B2C3D4B021000000000001,
+				A1B2C3D4B026000000000001,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

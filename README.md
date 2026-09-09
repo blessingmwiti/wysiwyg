@@ -53,6 +53,18 @@ No code or daemons needed — plain macOS setting:
 3. Done — it starts quietly in the menu bar on every boot. Remove it the same
    way to stop.
 
+### Updates
+
+The app checks GitHub Releases on launch and every 6 hours. When a newer tag
+exists, a banner appears at the top of the popup with a **Download** button
+(**Later** dismisses that version for good).
+
+To ship an update:
+
+1. Bump `MARKETING_VERSION` (and build number) in the Xcode project.
+2. Build Release, zip with `ditto`, push, and tag `vX.Y`.
+3. Create a GitHub Release for the tag and attach the zip.
+
 Recipients follow the Install steps above. (For Gatekeeper-free distribution
 the app would need a Developer ID + notarization — not set up yet.)
 

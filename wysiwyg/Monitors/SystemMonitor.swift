@@ -6,7 +6,7 @@ import Combine
 @MainActor
 final class SystemMonitor: ObservableObject {
     @Published var cpu = CPUReader.Snapshot(average: 0, perCore: [], user: 0, system: 0)
-    @Published var memory = MemoryReader.Snapshot(total: 1, used: 0, free: 1, wired: 0, compressed: 0, swapTotal: 0, swapUsed: 0)
+    @Published var memory = MemoryReader.Snapshot(total: 1, used: 0, free: 1, wired: 0, compressed: 0, swapTotal: 0, swapUsed: 0, kernelPressure: nil)
     @Published var gpu: GPUReader.State = .unavailable(reason: "Starting…")
     @Published var network = NetworkReader.Snapshot(downRate: 0, upRate: 0, totalDown: 0, totalUp: 0, interfaces: [], primaryLocalIP: nil)
     @Published var disk = DiskReader.Snapshot(volumes: [], readRate: nil, writeRate: nil)
@@ -14,7 +14,12 @@ final class SystemMonitor: ObservableObject {
     @Published var sensors = SensorReader.Snapshot(readings: [])
     @Published var topProcesses: [ProcessReader.Proc] = []
     @Published var publicIP: String?
+    @Published var update: UpdateChecker.Result = .unknown
     let system = SystemInfo.current()
+
+    var appVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
+    }
 
     // Rolling history for sparklines (last ~60 ticks).
     @Published var cpuHistory: [Double] = []
@@ -31,6 +36,8 @@ final class SystemMonitor: ObservableObject {
     private let batteryReader = BatteryReader()
     private let sensorReader = SensorReader()
     private let procReader = ProcessReader()
+    private let updateChecker = UpdateChecker()
+    private let skippedUpdateKey = "wysiwyg.skippedUpdate"
 
     private var timer: Timer?
     private var tick = 0
@@ -43,6 +50,7 @@ final class SystemMonitor: ObservableObject {
             Task { @MainActor in self?.refresh() }
         }
         ipTask = Task { await fetchPublicIP() }
+        Task { update = await updateChecker.check(currentVersion: appVersion) }
     }
 
     func stop() {
@@ -61,6 +69,7 @@ final class SystemMonitor: ObservableObject {
         gpu = gpuReader.sample()                              // self-diffs internally
         if tick % 3 == 1 { topProcesses = procReader.sampleTop() } // 3s, heavier
         if tick % 5 == 1 { sensors = sensorReader.sample() }  // 5s, SMC is slowish
+        if tick % 21600 == 0 { Task { update = await updateChecker.check(currentVersion: appVersion) } } // 6h
 
         push(&cpuHistory, cpu.average)
         push(&memHistory, memory.usage)
@@ -72,6 +81,15 @@ final class SystemMonitor: ObservableObject {
     private func push(_ arr: inout [Double], _ v: Double) {
         arr.append(v)
         if arr.count > 60 { arr.removeFirst(arr.count - 60) }
+    }
+
+    /// Banner visibility: available, and the user hasn't hit Later on it.
+    func shouldShowUpdate(_ version: String) -> Bool {
+        UserDefaults.standard.string(forKey: skippedUpdateKey) != version
+    }
+
+    func skipUpdate(_ version: String) {
+        UserDefaults.standard.set(version, forKey: skippedUpdateKey)
     }
 
     private func fetchPublicIP() async {
