@@ -1,4 +1,4 @@
-# wysiwyg
+# wysiwyg - what you see is what you get
 
 One menu-bar icon. Everything about your Mac.
 
