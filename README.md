@@ -8,9 +8,9 @@ I hated how apps like iStat Menus and Stats occupied a bigger part of my menu ba
 
 ## Screenshots
 
-![wysiwyg popup — CPU, memory, GPU, network](Screenshots/dashboard-top.png)
+![wysiwyg popup — CPU, memory, GPU, network](Screenshots/dashboard-top.jpg)
 
-![wysiwyg popup — disk, battery, sensors, top processes](Screenshots/dashboard-bottom.png)
+![wysiwyg popup — disk, battery, sensors, top processes](Screenshots/dashboard-bottom.jpg)
 
 ## Features
 
