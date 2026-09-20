@@ -4,6 +4,14 @@ import IOKit
 /// Battery status read straight from the AppleSmartBattery registry entry.
 /// No private APIs, no sudo. Desktops (no battery) report isPresent = false.
 /// Intel + Silicon.
+///
+/// Health (Maximum Capacity) follows current macOS Settings behavior
+/// (Tahoe 26 / 27 Golden Gate era): it prefers `NominalChargeCapacity` —
+/// the stable, smoothed full-charge value Settings shows as
+/// "Maximum Capacity" — then falls back to `AppleRawMaxCapacity`
+/// (previous-versions behavior), then legacy `MaxCapacity`.
+/// `MaxCapacity` alone is normalized to 100 on Apple Silicon and must never
+/// be used for health by itself — that's the classic Silicon trap.
 final class BatteryReader {
     struct Snapshot: Equatable {
         let isPresent: Bool
@@ -13,32 +21,75 @@ final class BatteryReader {
         let isCharged: Bool
         let timeRemainingMinutes: Int?
         let cycleCount: Int?
-        /// maxCapacity / designCapacity
+        /// maxCapacity / designCapacity, 0...1, nil when unknown
         let health: Double?
+        /// Which key produced `health`: nominal (current macOS) vs rawMax
+        /// (previous versions) vs legacy MaxCapacity.
+        let healthSource: HealthSource
+        /// Raw mAh figures behind the percentage (nil when unknown).
+        let fullChargeMah: Int?
+        let designMah: Int?
+        /// macOS wording: Normal / Service Recommended.
+        let condition: String?
         let temperatureC: Double?
         let powerSource: String
+
+        enum HealthSource: String, Equatable {
+            case nominal = "nominal"
+            case rawMax = "raw max"
+            case legacy = "legacy"
+            case none = "unknown"
+        }
     }
 
     func sample() -> Snapshot {
         let ac = Snapshot(isPresent: false, level: 1, isCharging: false, isCharged: false,
                           timeRemainingMinutes: nil, cycleCount: nil, health: nil,
-                          temperatureC: nil, powerSource: "AC")
+                          healthSource: .none, fullChargeMah: nil, designMah: nil,
+                          condition: nil, temperatureC: nil, powerSource: "AC")
         guard let b = Self.readBattery() else { return ac }
 
         let level = b.maxCapacity > 0 ? Double(b.currentCapacity) / Double(b.maxCapacity) : 0
-        var health: Double?
-        if let design = b.designCapacity, design > 0 {
-            health = Double(b.maxCapacity) / Double(design)
+        // macOS 27 style: NominalChargeCapacity first, then raw max, then legacy.
+        var fullCharge: Int?
+        var source = Snapshot.HealthSource.none
+        if let n = b.nominalCapacity, n > 0 {
+            fullCharge = n; source = .nominal
+        } else if let r = b.rawMaxCapacity, r > 0 {
+            fullCharge = r; source = .rawMax
+        } else if b.maxCapacity > 0, b.maxCapacity <= 100, (b.designCapacity ?? 0) > 1000 {
+            // Apple Silicon trap: MaxCapacity is a 0-100 percentage here, not mAh.
+            // Without a raw/nominal key we cannot compute health honestly.
+            fullCharge = nil; source = .none
+        } else if b.maxCapacity > 0 {
+            fullCharge = b.maxCapacity; source = .legacy
         }
-        let source = b.externalConnected ? "AC Power" : "Battery Power"
+        var health: Double?
+        if let full = fullCharge, let design = b.designCapacity, design > 0 {
+            health = min(1, max(0, Double(full) / Double(design)))
+        } else {
+            source = .none
+        }
+        let condition: String? = {
+            guard b.cycleCount != nil || health != nil else { return nil }
+            if b.permanentFailure { return "Service Recommended" }
+            if let h = health, h < 0.8 { return "Service Recommended" }
+            return "Normal"
+        }()
+        let src = health == nil ? Snapshot.HealthSource.none : source
+        let power = b.externalConnected ? "AC Power" : "Battery Power"
         return Snapshot(
             isPresent: true, level: min(1, max(0, level)),
             isCharging: b.isCharging, isCharged: b.fullyCharged,
             timeRemainingMinutes: b.minutesRemaining,
             cycleCount: b.cycleCount,
             health: health,
+            healthSource: src,
+            fullChargeMah: fullCharge,
+            designMah: b.designCapacity,
+            condition: condition,
             temperatureC: b.temperatureC,
-            powerSource: source
+            powerSource: power
         )
     }
 
@@ -47,11 +98,14 @@ final class BatteryReader {
     private struct RawBattery {
         var currentCapacity = 0
         var maxCapacity = 0
+        var rawMaxCapacity: Int?
+        var nominalCapacity: Int?
         var designCapacity: Int?
         var cycleCount: Int?
         var isCharging = false
         var fullyCharged = false
         var externalConnected = false
+        var permanentFailure = false
         var minutesRemaining: Int?
         var temperatureC: Double?
     }
@@ -78,17 +132,40 @@ final class BatteryReader {
         // Apple Silicon reports Current/MaxCapacity as percentages (0-100)
         // while DesignCapacity stays raw — so prefer the raw keys when present.
         if let rawMax = num("AppleRawMaxCapacity")?.intValue, rawMax > 0 {
+            out.rawMaxCapacity = rawMax
             out.maxCapacity = rawMax
             out.currentCapacity = num("AppleRawCurrentCapacity")?.intValue ?? rawMax
         } else {
             out.currentCapacity = num("CurrentCapacity")?.intValue ?? 0
             out.maxCapacity = num("MaxCapacity")?.intValue ?? 0
         }
-        out.designCapacity = num("DesignCapacity")?.intValue
+        // macOS 27 / Tahoe "Maximum Capacity" source: stable nominal value.
+        // On newer Apple Silicon the mAh keys live inside the nested
+        // BatteryData dictionary (top level only carries 0-100 percentages),
+        // so merge from there when the top level has no raw values.
+        let sub = dict["BatteryData"] as? [String: Any]
+        let subNum = { (k: String) -> NSNumber? in sub?[k] as? NSNumber }
+        if let nominal = num("NominalChargeCapacity")?.intValue, nominal > 0 {
+            out.nominalCapacity = nominal
+        } else if let nominal = subNum("NominalChargeCapacity")?.intValue, nominal > 0 {
+            out.nominalCapacity = nominal
+        } else if let rawNominal = (num("AppleRawNominalCapacity") ?? subNum("AppleRawNominalCapacity"))?.intValue,
+                  rawNominal > 0 {
+            out.nominalCapacity = rawNominal
+        }
+        if out.rawMaxCapacity == nil {
+            if let full = subNum("FullChargeCapacity")?.intValue, full > 0 {
+                out.rawMaxCapacity = full
+            }
+        }
+        if out.designCapacity == nil {
+            out.designCapacity = subNum("DesignCapacity")?.intValue
+        }
         out.cycleCount = num("CycleCount")?.intValue
         out.isCharging = num("IsCharging")?.boolValue ?? false
         out.fullyCharged = num("FullyCharged")?.boolValue ?? false
         out.externalConnected = num("ExternalConnected")?.boolValue ?? false
+        out.permanentFailure = (num("PermanentFailureStatus")?.intValue ?? 0) != 0
 
         // TimeRemaining is minutes (65535 = unknown/calculating).
         let timeKeys = ["TimeRemaining", "AvgTimeToEmpty", "AvgTimeToFull"]

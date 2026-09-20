@@ -32,8 +32,10 @@ struct DiskBatteryView: View {
                     Text("\(v.name) \(Formatters.percent(v.usage))")
                         .font(.system(size: 11)).foregroundStyle(.secondary).monospacedDigit()
                 }
+                Spacer(minLength: 0)
             }
             .padding(10)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(.quaternary.opacity(0.55), in: RoundedRectangle(cornerRadius: 10))
 
             // Battery
@@ -52,15 +54,29 @@ struct DiskBatteryView: View {
                     Text(batteryLine)
                         .font(.system(size: 11)).foregroundStyle(.secondary).monospacedDigit()
                     if let cycles = battery.cycleCount {
-                        Text("\(cycles) cycles" + (battery.health.map { " · \(Int($0 * 100))% health" } ?? ""))
+                        Text("\(cycles) cycles" + maxCapacitySuffix)
                             .font(.system(size: 11)).foregroundStyle(.secondary).monospacedDigit()
+                    } else if !maxCapacitySuffix.isEmpty {
+                        Text(maxCapacitySuffix.trimmingCharacters(in: .whitespaces))
+                            .font(.system(size: 11)).foregroundStyle(.secondary).monospacedDigit()
+                    }
+                    if let condition = battery.condition {
+                        if condition == "Normal" {
+                            Text(condition)
+                                .font(.system(size: 11)).foregroundStyle(.secondary)
+                        } else {
+                            Text(condition)
+                                .font(.system(size: 11, weight: .semibold)).foregroundStyle(.orange)
+                        }
                     }
                 } else {
                     Text("No battery — desktop Mac")
                         .font(.system(size: 11)).foregroundStyle(.secondary)
                 }
+                Spacer(minLength: 0)
             }
             .padding(10)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             .background(.quaternary.opacity(0.55), in: RoundedRectangle(cornerRadius: 10))
         }
     }
@@ -86,5 +102,13 @@ struct DiskBatteryView: View {
         guard let m = battery.timeRemainingMinutes else { return "" }
         if m >= 60 { return " · \(m / 60)h \(m % 60)m left" }
         return " · \(m)m left"
+    }
+
+    /// macOS 27 style: "Maximum Capacity 93%". Falls back gracefully when the
+    /// nominal key is missing (previous macOS / Intel) — same label, raw-max
+    /// or legacy source behind it; empty when nothing honest is available.
+    private var maxCapacitySuffix: String {
+        guard let h = battery.health else { return "" }
+        return " · Maximum Capacity \(Int((h * 100).rounded()))%"
     }
 }

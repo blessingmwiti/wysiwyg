@@ -16,9 +16,15 @@ struct SensorsProcessesView: View {
                     Spacer()
                 }
                 if sensors.isAvailable {
-                    FlowChips(readings: sensors.readings)
+                    let temps = sensors.temps
+                    if temps.isEmpty {
+                        Text("No temperature sensors exposed — fans live in the Fans card below.")
+                            .font(.system(size: 11)).foregroundStyle(.secondary)
+                    } else {
+                        FlowChips(readings: temps)
+                    }
                 } else {
-                    Text("Temperature / fan sensors unavailable on this Mac")
+                    Text("Temperature sensors unavailable on this Mac")
                         .font(.system(size: 11)).foregroundStyle(.secondary)
                 }
             }

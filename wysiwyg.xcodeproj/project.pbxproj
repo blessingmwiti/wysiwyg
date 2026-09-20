@@ -33,6 +33,13 @@
 		A1B2C3D4B026000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F028000000000001; };
 		A1B2C3D4B024000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F026000000000001; };
 		A1B2C3D4B025000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F027000000000001; };
+		A1B2C3D4B027000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F029000000000001; };
+		A1B2C3D4B028000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F030000000000001; };
+		A1B2C3D4B029000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F031000000000001; };
+		A1B2C3D4B030000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F032000000000001; };
+		A1B2C3D4B031000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F026000000000001; };
+		A1B2C3D4B032000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F033000000000001; };
+		A1B2C3D4B033000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F031000000000001; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,7 +71,26 @@
 		A1B2C3D4F026000000000001 = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		A1B2C3D4F027000000000001 = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A1B2C3D4F028000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
+		A1B2C3D4F029000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanController.swift; sourceTree = "<group>"; };
+		A1B2C3D4F030000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FansView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F031000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanSMC.swift; sourceTree = "<group>"; };
+		A1B2C3D4F032000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		A1B2C3D4F033000000000001 = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fanhelper; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A1B2C3D40002000000000007 = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				A1B2C3D4B032000000000001,
+			);
+			name = "Embed fanhelper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		A1B2C3D40002000000000003 = {
@@ -73,6 +99,14 @@
 			files = (
 				A1B2C3D4B024000000000001,
 				A1B2C3D4B025000000000001,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D40002000000000006 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4B031000000000001,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +150,7 @@
 				A1B2C3D40000000000000006,
 				A1B2C3D40000000000000007,
 				A1B2C3D40000000000000008,
+				A1B2C3D40000000000000009,
 			);
 			path = wysiwyg;
 			sourceTree = "<group>";
@@ -134,6 +169,8 @@
 				A1B2C3D4F011000000000001,
 				A1B2C3D4F012000000000001,
 				A1B2C3D4F028000000000001,
+				A1B2C3D4F029000000000001,
+				A1B2C3D4F031000000000001,
 			);
 			name = Monitors;
 			path = Monitors;
@@ -150,6 +187,7 @@
 				A1B2C3D4F019000000000001,
 				A1B2C3D4F020000000000001,
 				A1B2C3D4F021000000000001,
+				A1B2C3D4F030000000000001,
 			);
 			name = Views;
 			path = Views;
@@ -164,6 +202,15 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		A1B2C3D40000000000000009 = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4F032000000000001,
+			);
+			name = FanHelper;
+			path = FanHelper;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -174,15 +221,33 @@
 				A1B2C3D40002000000000002,
 				A1B2C3D40002000000000003,
 				A1B2C3D40002000000000004,
+				A1B2C3D40002000000000007,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A1B2C3D40009000000000001,
 			);
 			name = wysiwyg;
 			productName = wysiwyg;
 			productReference = A1B2C3D4F025000000000001;
 			productType = "com.apple.product-type.application";
+		};
+		A1B2C3D40002000000000008 = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3D40003000000000003;
+			buildPhases = (
+				A1B2C3D40002000000000005,
+				A1B2C3D40002000000000006,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = fanhelper;
+			productName = fanhelper;
+			productReference = A1B2C3D4F033000000000001;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -214,6 +279,7 @@
 			projectRoot = "";
 			targets = (
 				A1B2C3D40002000000000001,
+				A1B2C3D40002000000000008,
 			);
 		};
 /* End PBXProject section */
@@ -256,10 +322,40 @@
 				A1B2C3D4B020000000000001,
 				A1B2C3D4B021000000000001,
 				A1B2C3D4B026000000000001,
+				A1B2C3D4B027000000000001,
+				A1B2C3D4B028000000000001,
+				A1B2C3D4B029000000000001,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D40002000000000005 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1B2C3D4B030000000000001,
+				A1B2C3D4B033000000000001,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A1B2C3D40009000000000001 = {
+			isa = PBXTargetDependency;
+			target = A1B2C3D40002000000000008;
+			targetProxy = A1B2C3D40009000000000002;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		A1B2C3D40009000000000002 = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1B2C3D40000000000000001;
+			proxyType = 1;
+			remoteGlobalIDString = A1B2C3D40002000000000008;
+			remoteInfo = fanhelper;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin XCBuildConfiguration section */
 		A1B2C3D40004000000000001 = {
@@ -382,7 +478,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"wysiwyg/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -395,7 +491,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wysiwyg.app;
 				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
@@ -416,7 +512,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"wysiwyg/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -429,12 +525,40 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.1.0;
+				MARKETING_VERSION = 1.2.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wysiwyg.app;
 				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		A1B2C3D40004000000000005 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A1B2C3D40004000000000006 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -456,6 +580,15 @@
 			buildConfigurations = (
 				A1B2C3D40004000000000003,
 				A1B2C3D40004000000000004,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3D40003000000000003 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3D40004000000000005,
+				A1B2C3D40004000000000006,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

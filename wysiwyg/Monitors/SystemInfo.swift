@@ -8,6 +8,10 @@ struct SystemInfo: Equatable {
     let hostname: String
     let physicalCores: Int
     let logicalCores: Int
+    /// Apple Silicon E/P split. Intel: performanceCores == physical, efficiencyCores == 0.
+    let performanceCores: Int
+    let efficiencyCores: Int
+    var hasClusterInfo: Bool { efficiencyCores > 0 && performanceCores > 0 }
     let totalMemory: UInt64
     let bootDate: Date
 
@@ -25,6 +29,7 @@ struct SystemInfo: Equatable {
         let physical = Sysctl.int("hw.physicalcpu") ?? ProcessInfo.processInfo.processorCount
         let logical = Sysctl.int("hw.logicalcpu") ?? ProcessInfo.processInfo.processorCount
         let mem = Sysctl.uint64("hw.memsize") ?? ProcessInfo.processInfo.physicalMemory
+        let clusters = Self.cpuClusters(fallbackPhysical: physical)
         return SystemInfo(
             model: model,
             chipName: chip,
@@ -32,6 +37,8 @@ struct SystemInfo: Equatable {
             hostname: ProcessInfo.processInfo.hostName,
             physicalCores: physical,
             logicalCores: logical,
+            performanceCores: clusters.performance,
+            efficiencyCores: clusters.efficiency,
             totalMemory: mem,
             bootDate: Self.bootDate()
         )
@@ -56,5 +63,34 @@ struct SystemInfo: Equatable {
         // Detailed chip marketing name (M1/M2/...) needs ioreg; keep it honest.
         if model.hasPrefix("Mac") { return "Apple Silicon (\(model))" }
         return model
+    }
+
+    /// E/P core split from hw.perflevel*. Uses the level *names* (not the
+    /// index) so we don't assume perflevel0 is always Performance.
+    /// Returns (performance, efficiency) logical counts; Intel -> (physical, 0).
+    static func cpuClusters(fallbackPhysical: Int) -> (performance: Int, efficiency: Int) {
+        let nLevels = Sysctl.int("hw.nperflevels") ?? 0
+        guard nLevels >= 2 else {
+            return (fallbackPhysical, 0)
+        }
+        var perf = 0, eff = 0
+        for level in 0..<nLevels {
+            let base = "hw.perflevel\(level)"
+            let count = Sysctl.int("\(base).logicalcpu")
+                ?? Sysctl.int("\(base).physicalcpu") ?? 0
+            let name = (Sysctl.string("\(base).name") ?? "").lowercased()
+            if name.contains("efficien") {
+                eff += count
+            } else if name.contains("perform") || name.contains("super") {
+                // "Super" is the performance-tier name on newer chips (M5).
+                perf += count
+            } else {
+                // Unknown label: level 0 has historically been the performance
+                // tier on Apple Silicon — treat as performance.
+                perf += count
+            }
+        }
+        guard perf + eff > 0 else { return (fallbackPhysical, 0) }
+        return (perf, eff)
     }
 }

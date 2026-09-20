@@ -4,6 +4,7 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var monitor: SystemMonitor
     @Environment(\.openURL) private var openURL
+    @State private var nudge = false
 
     var body: some View {
         ScrollView {
@@ -19,6 +20,7 @@ struct ContentView: View {
                             upHistory: monitor.upHistory,
                             publicIP: monitor.publicIP)
                 DiskBatteryView(disk: monitor.disk, battery: monitor.battery)
+                FansView(controller: monitor.fans)
                 SensorsProcessesView(sensors: monitor.sensors, processes: monitor.topProcesses)
                 footer
             }
@@ -36,11 +38,22 @@ struct ContentView: View {
                 Text("up \(Formatters.uptime(since: monitor.system.bootDate))")
                     .font(.system(size: 11)).foregroundStyle(.secondary).monospacedDigit()
             }
-            Text("\(monitor.system.chipName) · \(monitor.system.physicalCores) physical / \(monitor.system.logicalCores) logical · macOS \(monitor.system.osVersion)")
+            Text(headerSubtitle)
                 .font(.system(size: 11)).foregroundStyle(.secondary)
                 .lineLimit(2)
         }
         .padding(.horizontal, 2)
+    }
+
+    private var headerSubtitle: String {
+        let s = monitor.system
+        let cores: String
+        if s.hasClusterInfo {
+            cores = "\(s.performanceCores)P + \(s.efficiencyCores)E · \(s.physicalCores) physical / \(s.logicalCores) logical"
+        } else {
+            cores = "\(s.physicalCores) physical / \(s.logicalCores) logical"
+        }
+        return "\(s.chipName) · \(cores) · macOS \(s.osVersion)"
     }
 
     private var updateBanner: some View {
@@ -67,14 +80,33 @@ struct ContentView: View {
     }
 
     private var footer: some View {
-        HStack {
-            Text(monitor.system.hostname)
-                .font(.system(size: 11)).foregroundStyle(.tertiary)
-                .lineLimit(1)
-            Spacer()
-            Button("Quit") { NSApplication.shared.terminate(nil) }
-                .buttonStyle(.link)
-                .font(.system(size: 11))
+        VStack(alignment: .leading, spacing: 4) {
+            HStack {
+                Text(monitor.system.hostname)
+                    .font(.system(size: 11)).foregroundStyle(.tertiary)
+                    .lineLimit(1)
+                Spacer()
+                Button("Quit") { NSApplication.shared.terminate(nil) }
+                    .buttonStyle(.link)
+                    .font(.system(size: 11))
+            }
+            HStack {
+                Spacer()
+                Text("👉")
+                    .font(.system(size: 11))
+                    .offset(x: nudge ? 3 : -2)
+                    .animation(.easeInOut(duration: 0.7).repeatForever(autoreverses: true), value: nudge)
+                    .onAppear { nudge = true }
+                Link("Built by Blessing", destination: URL(string: "https://blessingmwiti.com")!)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.blue)
+                    .underline()
+                    .onHover { inside in
+                        if inside { NSCursor.pointingHand.push() }
+                        else { NSCursor.pop() }
+                    }
+                Spacer()
+            }
         }
         .padding(.horizontal, 2)
     }

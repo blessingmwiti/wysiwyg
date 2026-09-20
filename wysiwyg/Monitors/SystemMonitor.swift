@@ -5,17 +5,19 @@ import Combine
 /// Single source of truth for the whole dashboard (one menu-bar popup).
 @MainActor
 final class SystemMonitor: ObservableObject {
-    @Published var cpu = CPUReader.Snapshot(average: 0, perCore: [], user: 0, system: 0)
+    @Published var cpu = CPUReader.Snapshot(average: 0, perCore: [], user: 0, system: 0, eAverage: 0, pAverage: 0, eCount: 0, pCount: 0)
     @Published var memory = MemoryReader.Snapshot(total: 1, used: 0, free: 1, wired: 0, compressed: 0, swapTotal: 0, swapUsed: 0, kernelPressure: nil)
     @Published var gpu: GPUReader.State = .unavailable(reason: "Starting…")
     @Published var network = NetworkReader.Snapshot(downRate: 0, upRate: 0, totalDown: 0, totalUp: 0, interfaces: [], primaryLocalIP: nil)
     @Published var disk = DiskReader.Snapshot(volumes: [], readRate: nil, writeRate: nil)
-    @Published var battery = BatteryReader.Snapshot(isPresent: false, level: 1, isCharging: false, isCharged: false, timeRemainingMinutes: nil, cycleCount: nil, health: nil, temperatureC: nil, powerSource: "AC")
+    @Published var battery = BatteryReader.Snapshot(isPresent: false, level: 1, isCharging: false, isCharged: false, timeRemainingMinutes: nil, cycleCount: nil, health: nil, healthSource: .none, fullChargeMah: nil, designMah: nil, condition: nil, temperatureC: nil, powerSource: "AC")
     @Published var sensors = SensorReader.Snapshot(readings: [])
     @Published var topProcesses: [ProcessReader.Proc] = []
     @Published var publicIP: String?
     @Published var update: UpdateChecker.Result = .unknown
     let system = SystemInfo.current()
+    /// Per-fan Auto/Manual helper (SMC). Refreshed on the slow sensor cadence.
+    let fans = FanController()
 
     var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "1.0"
@@ -69,13 +71,14 @@ final class SystemMonitor: ObservableObject {
         gpu = gpuReader.sample()                              // self-diffs internally
         if tick % 3 == 1 { topProcesses = procReader.sampleTop() } // 3s, heavier
         if tick % 5 == 1 { sensors = sensorReader.sample() }  // 5s, SMC is slowish
+        if tick % 5 == 1 { fans.refresh() } // 5s, same SMC cadence
         if tick % 21600 == 0 { Task { update = await updateChecker.check(currentVersion: appVersion) } } // 6h
 
         push(&cpuHistory, cpu.average)
         push(&memHistory, memory.usage)
         push(&downHistory, network.downRate)
         push(&upHistory, network.upRate)
-        if case .available(let u, _, _) = gpu { push(&gpuHistory, u) }
+        if let u = gpu.bestUtilization { push(&gpuHistory, u) }
     }
 
     private func push(_ arr: inout [Double], _ v: Double) {

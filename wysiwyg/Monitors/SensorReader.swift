@@ -206,34 +206,3 @@ private final class SMCConnection {
         return IOConnectCallStructMethod(conn, 2, &input, inputSize, &output, &outputSize)
     }
 }
-
-/// Mirrors smc.h `SMCKeyData_t` (field order + sizes matter; stride = 80).
-private struct SMCParam {
-    var key: UInt32 = 0
-    var versMajor: UInt8 = 0, versMinor: UInt8 = 0, versBuild: UInt8 = 0, versReserved: UInt8 = 0
-    var versRelease: UInt16 = 0
-    var pLimitVersion: UInt16 = 0, pLimitLength: UInt16 = 0
-    var pLimitCPU: UInt32 = 0, pLimitGPU: UInt32 = 0, pLimitMem: UInt32 = 0
-    var keyInfoSize: UInt32 = 0
-    var keyInfoType: UInt32 = 0
-    var keyInfoAttrs: UInt8 = 0
-    var padding: UInt16 = 0
-    var result: UInt8 = 0
-    var status: UInt8 = 0
-    var data8: UInt8 = 0
-    var data32: UInt32 = 0
-    var bytes: (UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
-                UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
-                UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8,
-                UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8, UInt8) =
-        (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
-
-    init() {}
-    init(key: UInt32, data8: UInt8, keyInfoSize: UInt32 = 0) {
-        self.key = key; self.data8 = data8; self.keyInfoSize = keyInfoSize
-    }
-
-    var byteArray: [UInt8] {
-        withUnsafeBytes(of: bytes) { Array($0) }
-    }
-}
