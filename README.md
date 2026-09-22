@@ -19,7 +19,7 @@ I hated how apps like iStat Menus and Stats occupied a bigger part of my menu ba
 - **CPU** — average, user/sys split, Performance + Efficiency clusters with per-core bars, 60s history
 - **Memory** — usage, swap, pressure tint, history
 - **GPU** — Performance + Standard devices with utilization, renderer/tiler split, temperature
-- **Network** — live up/down, totals, local + public IP, per-interface rates
+- **Network** — live up/down, persistent all-time totals, local + public IP, per-interface rates
 - **Disk** — volumes, free space, read/write activity
 - **Battery** — level, charging state, time remaining, cycles, Maximum Capacity + condition (macOS 27 style, legacy fallback)
 - **Fans** — per-fan Automatic/Manual control with slider; writes go through the bundled `fanhelper` via one admin prompt (direct writes need root)

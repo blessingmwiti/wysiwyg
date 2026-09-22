@@ -6,7 +6,7 @@ import Combine
 @MainActor
 final class SystemMonitor: ObservableObject {
     @Published var cpu = CPUReader.Snapshot(average: 0, perCore: [], user: 0, system: 0, eAverage: 0, pAverage: 0, eCount: 0, pCount: 0)
-    @Published var memory = MemoryReader.Snapshot(total: 1, used: 0, free: 1, wired: 0, compressed: 0, swapTotal: 0, swapUsed: 0, kernelPressure: nil)
+    @Published var memory = MemoryReader.Snapshot(total: 1, used: 0, free: 1, cachedFiles: 0, appMemory: 0, wired: 0, compressed: 0, swapTotal: 0, swapUsed: 0, kernelPressure: nil)
     @Published var gpu: GPUReader.State = .unavailable(reason: "Starting…")
     @Published var network = NetworkReader.Snapshot(downRate: 0, upRate: 0, totalDown: 0, totalUp: 0, interfaces: [], primaryLocalIP: nil)
     @Published var disk = DiskReader.Snapshot(volumes: [], readRate: nil, writeRate: nil)

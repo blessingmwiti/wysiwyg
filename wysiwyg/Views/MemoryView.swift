@@ -17,6 +17,11 @@ struct MemoryView: View {
                  value: Formatters.percent(snap.usage),
                  subtitle: "\(Formatters.memory(snap.used)) / \(Formatters.memory(snap.total)) · swap \(Formatters.memory(snap.swapUsed))") {
             HistoryChart(values: history, tint: tint)
+            // Same rows as Activity Monitor, so every number can be compared 1:1.
+            Text("app \(Formatters.memory(snap.appMemory)) · wired \(Formatters.memory(snap.wired)) · compressed \(Formatters.memory(snap.compressed))")
+                .font(.system(size: 11)).foregroundStyle(.secondary).monospacedDigit()
+            Text("cached \(Formatters.memory(snap.cachedFiles)) · free \(Formatters.memory(snap.free))")
+                .font(.system(size: 11)).foregroundStyle(.tertiary).monospacedDigit()
         }
     }
 }

@@ -2,11 +2,25 @@ import Foundation
 import Darwin
 
 /// RAM + swap via Mach vm_statistics64. No sudo, Intel + Silicon.
+///
+/// Mirrors Activity Monitor exactly — including its famous quirk:
+/// - The App / Wired / Compressed rows come straight from the kernel's
+///   internal, wire and compressor counters.
+/// - The headline "Memory Used" is NOT the sum of those rows. Like AM, it
+///   is total − free − cached-files: everything resident that is neither
+///   free nor reclaimable file cache (speculative pages, kernel overhead).
+///   That is why AM's own footer reads ~0.5–1 GB higher than its rows, and
+///   why this card now does the same instead of trailing AM by that gap.
 final class MemoryReader {
     struct Snapshot: Equatable {
         let total: UInt64
+        /// Headline used: total − free − cached (tracks Activity Monitor).
         let used: UInt64
+        /// True free pages (matches AM's implied free: total − used − cached).
         let free: UInt64
+        /// Reclaimable file cache (matches AM's Cached Files).
+        let cachedFiles: UInt64
+        let appMemory: UInt64
         let wired: UInt64
         let compressed: UInt64
         let swapTotal: UInt64
@@ -40,27 +54,27 @@ final class MemoryReader {
             }
         }
 
-        var used: UInt64 = 0, wired: UInt64 = 0, compressed: UInt64 = 0
+        var used: UInt64 = 0, free: UInt64 = 0, cached: UInt64 = 0
+        var app: UInt64 = 0, wired: UInt64 = 0, compressed: UInt64 = 0
         if kr == KERN_SUCCESS {
             let p = Double(page)
-            let active = Double(vm.active_count) * p
-            let inactive = Double(vm.inactive_count) * p
-            let speculative = Double(vm.speculative_count) * p
+            // Activity Monitor rows, straight from the kernel's own counters.
             wired = UInt64(Double(vm.wire_count) * p)
             compressed = UInt64(Double(vm.compressor_page_count) * p)
             let purgeable = Double(vm.purgeable_count) * p
-            // File-backed cache is reclaimable — Activity Monitor doesn't
-            // count it as "used", so neither do we.
-            let external = Double(vm.external_page_count) * p
-            let u = active + inactive + speculative + Double(wired) + Double(compressed) - purgeable - external
-            used = UInt64(max(0, u))
-            if used > total { used = total }
+            app = UInt64(max(0, Double(vm.internal_page_count) * p - purgeable))
+            // Headline + cache follow AM's footer identity:
+            // used + cached + free = total.
+            free = UInt64(Double(vm.free_count) * p)
+            cached = UInt64(max(0, Double(vm.external_page_count) * p - purgeable))
+            let u = Double(total) - Double(free) - Double(cached)
+            used = UInt64(min(Double(total), max(0, u)))
         }
 
         let swap = Sysctl.swapUsage() ?? (0, 0)
         return Snapshot(
-            total: total, used: used, free: total >= used ? total - used : 0,
-            wired: wired, compressed: compressed,
+            total: total, used: used, free: free, cachedFiles: cached,
+            appMemory: app, wired: wired, compressed: compressed,
             swapTotal: swap.total, swapUsed: swap.used,
             kernelPressure: Self.kernelPressure()
         )

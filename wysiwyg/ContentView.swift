@@ -86,6 +86,9 @@ struct ContentView: View {
                     .font(.system(size: 11)).foregroundStyle(.tertiary)
                     .lineLimit(1)
                 Spacer()
+                Text("v\(monitor.appVersion)")
+                    .font(.system(size: 11)).foregroundStyle(.tertiary)
+                    .monospacedDigit()
                 Button("Quit") { NSApplication.shared.terminate(nil) }
                     .buttonStyle(.link)
                     .font(.system(size: 11))
