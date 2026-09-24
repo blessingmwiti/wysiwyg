@@ -3,110 +3,121 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1B2C3D4B001000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F001000000000001; };
-		A1B2C3D4B002000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F002000000000001; };
-		A1B2C3D4B003000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F003000000000001; };
-		A1B2C3D4B004000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F004000000000001; };
-		A1B2C3D4B005000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F005000000000001; };
-		A1B2C3D4B006000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F006000000000001; };
-		A1B2C3D4B007000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F007000000000001; };
-		A1B2C3D4B008000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F008000000000001; };
-		A1B2C3D4B009000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F009000000000001; };
-		A1B2C3D4B010000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F010000000000001; };
-		A1B2C3D4B011000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F011000000000001; };
-		A1B2C3D4B012000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F012000000000001; };
-		A1B2C3D4B013000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F013000000000001; };
-		A1B2C3D4B014000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F014000000000001; };
-		A1B2C3D4B015000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F015000000000001; };
-		A1B2C3D4B016000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F016000000000001; };
-		A1B2C3D4B017000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F017000000000001; };
-		A1B2C3D4B018000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F018000000000001; };
-		A1B2C3D4B019000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F019000000000001; };
-		A1B2C3D4B020000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F020000000000001; };
-		A1B2C3D4B021000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F021000000000001; };
-		A1B2C3D4B022000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F022000000000001; };
-		A1B2C3D4B023000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F023000000000001; };
-		A1B2C3D4B026000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F028000000000001; };
-		A1B2C3D4B024000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F026000000000001; };
-		A1B2C3D4B025000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F027000000000001; };
-		A1B2C3D4B027000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F029000000000001; };
-		A1B2C3D4B028000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F030000000000001; };
-		A1B2C3D4B029000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F031000000000001; };
-		A1B2C3D4B030000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F032000000000001; };
-		A1B2C3D4B031000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F026000000000001; };
-		A1B2C3D4B032000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F033000000000001; };
-		A1B2C3D4B033000000000001 = {isa = PBXBuildFile; fileRef = A1B2C3D4F031000000000001; };
+		A1B2C3D4B001000000000001 /* wysiwygApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F001000000000001 /* wysiwygApp.swift */; };
+		A1B2C3D4B002000000000001 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F002000000000001 /* ContentView.swift */; };
+		A1B2C3D4B003000000000001 /* SystemMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F003000000000001 /* SystemMonitor.swift */; };
+		A1B2C3D4B004000000000001 /* CPUReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F004000000000001 /* CPUReader.swift */; };
+		A1B2C3D4B005000000000001 /* MemoryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F005000000000001 /* MemoryReader.swift */; };
+		A1B2C3D4B006000000000001 /* GPUReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F006000000000001 /* GPUReader.swift */; };
+		A1B2C3D4B007000000000001 /* NetworkReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F007000000000001 /* NetworkReader.swift */; };
+		A1B2C3D4B008000000000001 /* DiskReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F008000000000001 /* DiskReader.swift */; };
+		A1B2C3D4B009000000000001 /* BatteryReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F009000000000001 /* BatteryReader.swift */; };
+		A1B2C3D4B010000000000001 /* SensorReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F010000000000001 /* SensorReader.swift */; };
+		A1B2C3D4B011000000000001 /* ProcessReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F011000000000001 /* ProcessReader.swift */; };
+		A1B2C3D4B012000000000001 /* SystemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F012000000000001 /* SystemInfo.swift */; };
+		A1B2C3D4B013000000000001 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F013000000000001 /* Formatters.swift */; };
+		A1B2C3D4B014000000000001 /* StatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F014000000000001 /* StatCard.swift */; };
+		A1B2C3D4B015000000000001 /* CPUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F015000000000001 /* CPUView.swift */; };
+		A1B2C3D4B016000000000001 /* MemoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F016000000000001 /* MemoryView.swift */; };
+		A1B2C3D4B017000000000001 /* GPUView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F017000000000001 /* GPUView.swift */; };
+		A1B2C3D4B018000000000001 /* NetworkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F018000000000001 /* NetworkView.swift */; };
+		A1B2C3D4B019000000000001 /* DiskBatteryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F019000000000001 /* DiskBatteryView.swift */; };
+		A1B2C3D4B020000000000001 /* SensorsProcessesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F020000000000001 /* SensorsProcessesView.swift */; };
+		A1B2C3D4B021000000000001 /* HistoryChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F021000000000001 /* HistoryChart.swift */; };
+		A1B2C3D4B022000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F022000000000001 /* Assets.xcassets */; };
+		A1B2C3D4B024000000000001 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F026000000000001 /* IOKit.framework */; };
+		A1B2C3D4B025000000000001 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F027000000000001 /* SystemConfiguration.framework */; };
+		A1B2C3D4B026000000000001 /* UpdateChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F028000000000001 /* UpdateChecker.swift */; };
+		A1B2C3D4B027000000000001 /* FanController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F029000000000001 /* FanController.swift */; };
+		A1B2C3D4B028000000000001 /* FansView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F030000000000001 /* FansView.swift */; };
+		A1B2C3D4B029000000000001 /* FanSMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F031000000000001 /* FanSMC.swift */; };
+		A1B2C3D4B030000000000001 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F032000000000001 /* main.swift */; };
+		A1B2C3D4B031000000000001 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F026000000000001 /* IOKit.framework */; };
+		A1B2C3D4B032000000000001 /* fanhelper in Embed fanhelper */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F033000000000001 /* fanhelper */; };
+		A1B2C3D4B033000000000001 /* FanSMC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4F031000000000001 /* FanSMC.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXFileReference section */
-		A1B2C3D4F001000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wysiwygApp.swift; sourceTree = "<group>"; };
-		A1B2C3D4F002000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F003000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMonitor.swift; sourceTree = "<group>"; };
-		A1B2C3D4F004000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPUReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F005000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F006000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F007000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F008000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F009000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F010000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F011000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessReader.swift; sourceTree = "<group>"; };
-		A1B2C3D4F012000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfo.swift; sourceTree = "<group>"; };
-		A1B2C3D4F013000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
-		A1B2C3D4F014000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
-		A1B2C3D4F015000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPUView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F016000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F017000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F018000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F019000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskBatteryView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F020000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsProcessesView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F021000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryChart.swift; sourceTree = "<group>"; };
-		A1B2C3D4F022000000000001 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A1B2C3D4F023000000000001 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A1B2C3D4F024000000000001 = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wysiwyg.entitlements; sourceTree = "<group>"; };
-		A1B2C3D4F025000000000001 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wysiwyg.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1B2C3D4F026000000000001 = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		A1B2C3D4F027000000000001 = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		A1B2C3D4F028000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
-		A1B2C3D4F029000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanController.swift; sourceTree = "<group>"; };
-		A1B2C3D4F030000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FansView.swift; sourceTree = "<group>"; };
-		A1B2C3D4F031000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanSMC.swift; sourceTree = "<group>"; };
-		A1B2C3D4F032000000000001 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		A1B2C3D4F033000000000001 = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fanhelper; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
+/* Begin PBXContainerItemProxy section */
+		A1B2C3D40009000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1B2C3D40000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1B2C3D40002000000000008;
+			remoteInfo = fanhelper;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A1B2C3D40002000000000007 = {
+		A1B2C3D40002000000000007 /* Embed fanhelper */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				A1B2C3D4B032000000000001,
+				A1B2C3D4B032000000000001 /* fanhelper in Embed fanhelper */,
 			);
 			name = "Embed fanhelper";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
+/* Begin PBXFileReference section */
+		A1B2C3D4F001000000000001 /* wysiwygApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wysiwygApp.swift; sourceTree = "<group>"; };
+		A1B2C3D4F002000000000001 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F003000000000001 /* SystemMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemMonitor.swift; sourceTree = "<group>"; };
+		A1B2C3D4F004000000000001 /* CPUReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPUReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F005000000000001 /* MemoryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F006000000000001 /* GPUReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F007000000000001 /* NetworkReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F008000000000001 /* DiskReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F009000000000001 /* BatteryReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F010000000000001 /* SensorReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F011000000000001 /* ProcessReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessReader.swift; sourceTree = "<group>"; };
+		A1B2C3D4F012000000000001 /* SystemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemInfo.swift; sourceTree = "<group>"; };
+		A1B2C3D4F013000000000001 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		A1B2C3D4F014000000000001 /* StatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
+		A1B2C3D4F015000000000001 /* CPUView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPUView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F016000000000001 /* MemoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F017000000000001 /* GPUView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPUView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F018000000000001 /* NetworkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F019000000000001 /* DiskBatteryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiskBatteryView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F020000000000001 /* SensorsProcessesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorsProcessesView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F021000000000001 /* HistoryChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryChart.swift; sourceTree = "<group>"; };
+		A1B2C3D4F022000000000001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1B2C3D4F023000000000001 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1B2C3D4F024000000000001 /* wysiwyg.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wysiwyg.entitlements; sourceTree = "<group>"; };
+		A1B2C3D4F025000000000001 /* wysiwyg.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wysiwyg.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D4F026000000000001 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		A1B2C3D4F027000000000001 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A1B2C3D4F028000000000001 /* UpdateChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateChecker.swift; sourceTree = "<group>"; };
+		A1B2C3D4F029000000000001 /* FanController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanController.swift; sourceTree = "<group>"; };
+		A1B2C3D4F030000000000001 /* FansView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FansView.swift; sourceTree = "<group>"; };
+		A1B2C3D4F031000000000001 /* FanSMC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FanSMC.swift; sourceTree = "<group>"; };
+		A1B2C3D4F032000000000001 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		A1B2C3D4F033000000000001 /* fanhelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fanhelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7AC985B3065462C00A43442 /* FUNDING.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = FUNDING.yml; sourceTree = "<group>"; };
+		E7AC985C3065465400A43442 /* FUNDING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FUNDING.md; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXFrameworksBuildPhase section */
-		A1B2C3D40002000000000003 = {
+		A1B2C3D40002000000000003 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D4B024000000000001,
-				A1B2C3D4B025000000000001,
+				A1B2C3D4B024000000000001 /* IOKit.framework in Frameworks */,
+				A1B2C3D4B025000000000001 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A1B2C3D40002000000000006 = {
+		A1B2C3D40002000000000006 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D4B031000000000001,
+				A1B2C3D4B031000000000001 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,129 +127,136 @@
 		A1B2C3D40000000000000002 = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D40000000000000005,
-				A1B2C3D40000000000000004,
-				A1B2C3D40000000000000003,
+				E7AC985C3065465400A43442 /* FUNDING.md */,
+				E7AC985B3065462C00A43442 /* FUNDING.yml */,
+				A1B2C3D40000000000000005 /* wysiwyg */,
+				A1B2C3D40000000000000004 /* Frameworks */,
+				A1B2C3D40000000000000003 /* Products */,
+				E7AC985A3065462200A43442 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
-		A1B2C3D40000000000000003 = {
+		A1B2C3D40000000000000003 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4F025000000000001,
+				A1B2C3D4F025000000000001 /* wysiwyg.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A1B2C3D40000000000000004 = {
+		A1B2C3D40000000000000004 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4F026000000000001,
-				A1B2C3D4F027000000000001,
+				A1B2C3D4F026000000000001 /* IOKit.framework */,
+				A1B2C3D4F027000000000001 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A1B2C3D40000000000000005 = {
+		A1B2C3D40000000000000005 /* wysiwyg */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4F001000000000001,
-				A1B2C3D4F002000000000001,
-				A1B2C3D4F022000000000001,
-				A1B2C3D4F023000000000001,
-				A1B2C3D4F024000000000001,
-				A1B2C3D40000000000000006,
-				A1B2C3D40000000000000007,
-				A1B2C3D40000000000000008,
-				A1B2C3D40000000000000009,
+				A1B2C3D4F001000000000001 /* wysiwygApp.swift */,
+				A1B2C3D4F002000000000001 /* ContentView.swift */,
+				A1B2C3D4F022000000000001 /* Assets.xcassets */,
+				A1B2C3D4F023000000000001 /* Info.plist */,
+				A1B2C3D4F024000000000001 /* wysiwyg.entitlements */,
+				A1B2C3D40000000000000006 /* Monitors */,
+				A1B2C3D40000000000000007 /* Views */,
+				A1B2C3D40000000000000008 /* Helpers */,
+				A1B2C3D40000000000000009 /* FanHelper */,
 			);
 			path = wysiwyg;
 			sourceTree = "<group>";
 		};
-		A1B2C3D40000000000000006 = {
+		A1B2C3D40000000000000006 /* Monitors */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4F003000000000001,
-				A1B2C3D4F004000000000001,
-				A1B2C3D4F005000000000001,
-				A1B2C3D4F006000000000001,
-				A1B2C3D4F007000000000001,
-				A1B2C3D4F008000000000001,
-				A1B2C3D4F009000000000001,
-				A1B2C3D4F010000000000001,
-				A1B2C3D4F011000000000001,
-				A1B2C3D4F012000000000001,
-				A1B2C3D4F028000000000001,
-				A1B2C3D4F029000000000001,
-				A1B2C3D4F031000000000001,
+				A1B2C3D4F003000000000001 /* SystemMonitor.swift */,
+				A1B2C3D4F004000000000001 /* CPUReader.swift */,
+				A1B2C3D4F005000000000001 /* MemoryReader.swift */,
+				A1B2C3D4F006000000000001 /* GPUReader.swift */,
+				A1B2C3D4F007000000000001 /* NetworkReader.swift */,
+				A1B2C3D4F008000000000001 /* DiskReader.swift */,
+				A1B2C3D4F009000000000001 /* BatteryReader.swift */,
+				A1B2C3D4F010000000000001 /* SensorReader.swift */,
+				A1B2C3D4F011000000000001 /* ProcessReader.swift */,
+				A1B2C3D4F012000000000001 /* SystemInfo.swift */,
+				A1B2C3D4F028000000000001 /* UpdateChecker.swift */,
+				A1B2C3D4F029000000000001 /* FanController.swift */,
+				A1B2C3D4F031000000000001 /* FanSMC.swift */,
 			);
-			name = Monitors;
 			path = Monitors;
 			sourceTree = "<group>";
 		};
-		A1B2C3D40000000000000007 = {
+		A1B2C3D40000000000000007 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4F014000000000001,
-				A1B2C3D4F015000000000001,
-				A1B2C3D4F016000000000001,
-				A1B2C3D4F017000000000001,
-				A1B2C3D4F018000000000001,
-				A1B2C3D4F019000000000001,
-				A1B2C3D4F020000000000001,
-				A1B2C3D4F021000000000001,
-				A1B2C3D4F030000000000001,
+				A1B2C3D4F014000000000001 /* StatCard.swift */,
+				A1B2C3D4F015000000000001 /* CPUView.swift */,
+				A1B2C3D4F016000000000001 /* MemoryView.swift */,
+				A1B2C3D4F017000000000001 /* GPUView.swift */,
+				A1B2C3D4F018000000000001 /* NetworkView.swift */,
+				A1B2C3D4F019000000000001 /* DiskBatteryView.swift */,
+				A1B2C3D4F020000000000001 /* SensorsProcessesView.swift */,
+				A1B2C3D4F021000000000001 /* HistoryChart.swift */,
+				A1B2C3D4F030000000000001 /* FansView.swift */,
 			);
-			name = Views;
 			path = Views;
 			sourceTree = "<group>";
 		};
-		A1B2C3D40000000000000008 = {
+		A1B2C3D40000000000000008 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4F013000000000001,
+				A1B2C3D4F013000000000001 /* Formatters.swift */,
 			);
-			name = Helpers;
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		A1B2C3D40000000000000009 = {
+		A1B2C3D40000000000000009 /* FanHelper */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4F032000000000001,
+				A1B2C3D4F032000000000001 /* main.swift */,
 			);
-			name = FanHelper;
 			path = FanHelper;
+			sourceTree = "<group>";
+		};
+		E7AC985A3065462200A43442 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				A1B2C3D4F033000000000001 /* fanhelper */,
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A1B2C3D40002000000000001 = {
+		A1B2C3D40002000000000001 /* wysiwyg */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1B2C3D40003000000000002;
+			buildConfigurationList = A1B2C3D40003000000000002 /* Build configuration list for PBXNativeTarget "wysiwyg" */;
 			buildPhases = (
-				A1B2C3D40002000000000002,
-				A1B2C3D40002000000000003,
-				A1B2C3D40002000000000004,
-				A1B2C3D40002000000000007,
+				A1B2C3D40002000000000002 /* Sources */,
+				A1B2C3D40002000000000003 /* Frameworks */,
+				A1B2C3D40002000000000004 /* Resources */,
+				A1B2C3D40002000000000007 /* Embed fanhelper */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				A1B2C3D40009000000000001,
+				A1B2C3D40009000000000001 /* PBXTargetDependency */,
 			);
 			name = wysiwyg;
 			productName = wysiwyg;
-			productReference = A1B2C3D4F025000000000001;
+			productReference = A1B2C3D4F025000000000001 /* wysiwyg.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A1B2C3D40002000000000008 = {
+		A1B2C3D40002000000000008 /* fanhelper */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A1B2C3D40003000000000003;
+			buildConfigurationList = A1B2C3D40003000000000003 /* Build configuration list for PBXNativeTarget "fanhelper" */;
 			buildPhases = (
-				A1B2C3D40002000000000005,
-				A1B2C3D40002000000000006,
+				A1B2C3D40002000000000005 /* Sources */,
+				A1B2C3D40002000000000006 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -246,13 +264,13 @@
 			);
 			name = fanhelper;
 			productName = fanhelper;
-			productReference = A1B2C3D4F033000000000001;
+			productReference = A1B2C3D4F033000000000001 /* fanhelper */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		A1B2C3D40000000000000001 = {
+		A1B2C3D40000000000000001 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
@@ -265,7 +283,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A1B2C3D40003000000000001;
+			buildConfigurationList = A1B2C3D40003000000000001 /* Build configuration list for PBXProject "wysiwyg" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -274,91 +292,81 @@
 				Base,
 			);
 			mainGroup = A1B2C3D40000000000000002;
-			productRefGroup = A1B2C3D40000000000000003;
+			productRefGroup = A1B2C3D40000000000000003 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A1B2C3D40002000000000001,
-				A1B2C3D40002000000000008,
+				A1B2C3D40002000000000001 /* wysiwyg */,
+				A1B2C3D40002000000000008 /* fanhelper */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		A1B2C3D40002000000000004 = {
+		A1B2C3D40002000000000004 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D4B022000000000001,
+				A1B2C3D4B022000000000001 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A1B2C3D40002000000000002 = {
+		A1B2C3D40002000000000002 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D4B001000000000001,
-				A1B2C3D4B002000000000001,
-				A1B2C3D4B003000000000001,
-				A1B2C3D4B004000000000001,
-				A1B2C3D4B005000000000001,
-				A1B2C3D4B006000000000001,
-				A1B2C3D4B007000000000001,
-				A1B2C3D4B008000000000001,
-				A1B2C3D4B009000000000001,
-				A1B2C3D4B010000000000001,
-				A1B2C3D4B011000000000001,
-				A1B2C3D4B012000000000001,
-				A1B2C3D4B013000000000001,
-				A1B2C3D4B014000000000001,
-				A1B2C3D4B015000000000001,
-				A1B2C3D4B016000000000001,
-				A1B2C3D4B017000000000001,
-				A1B2C3D4B018000000000001,
-				A1B2C3D4B019000000000001,
-				A1B2C3D4B020000000000001,
-				A1B2C3D4B021000000000001,
-				A1B2C3D4B026000000000001,
-				A1B2C3D4B027000000000001,
-				A1B2C3D4B028000000000001,
-				A1B2C3D4B029000000000001,
+				A1B2C3D4B001000000000001 /* wysiwygApp.swift in Sources */,
+				A1B2C3D4B002000000000001 /* ContentView.swift in Sources */,
+				A1B2C3D4B003000000000001 /* SystemMonitor.swift in Sources */,
+				A1B2C3D4B004000000000001 /* CPUReader.swift in Sources */,
+				A1B2C3D4B005000000000001 /* MemoryReader.swift in Sources */,
+				A1B2C3D4B006000000000001 /* GPUReader.swift in Sources */,
+				A1B2C3D4B007000000000001 /* NetworkReader.swift in Sources */,
+				A1B2C3D4B008000000000001 /* DiskReader.swift in Sources */,
+				A1B2C3D4B009000000000001 /* BatteryReader.swift in Sources */,
+				A1B2C3D4B010000000000001 /* SensorReader.swift in Sources */,
+				A1B2C3D4B011000000000001 /* ProcessReader.swift in Sources */,
+				A1B2C3D4B012000000000001 /* SystemInfo.swift in Sources */,
+				A1B2C3D4B013000000000001 /* Formatters.swift in Sources */,
+				A1B2C3D4B014000000000001 /* StatCard.swift in Sources */,
+				A1B2C3D4B015000000000001 /* CPUView.swift in Sources */,
+				A1B2C3D4B016000000000001 /* MemoryView.swift in Sources */,
+				A1B2C3D4B017000000000001 /* GPUView.swift in Sources */,
+				A1B2C3D4B018000000000001 /* NetworkView.swift in Sources */,
+				A1B2C3D4B019000000000001 /* DiskBatteryView.swift in Sources */,
+				A1B2C3D4B020000000000001 /* SensorsProcessesView.swift in Sources */,
+				A1B2C3D4B021000000000001 /* HistoryChart.swift in Sources */,
+				A1B2C3D4B026000000000001 /* UpdateChecker.swift in Sources */,
+				A1B2C3D4B027000000000001 /* FanController.swift in Sources */,
+				A1B2C3D4B028000000000001 /* FansView.swift in Sources */,
+				A1B2C3D4B029000000000001 /* FanSMC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A1B2C3D40002000000000005 = {
+		A1B2C3D40002000000000005 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1B2C3D4B030000000000001,
-				A1B2C3D4B033000000000001,
+				A1B2C3D4B030000000000001 /* main.swift in Sources */,
+				A1B2C3D4B033000000000001 /* FanSMC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		A1B2C3D40009000000000001 = {
+		A1B2C3D40009000000000001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A1B2C3D40002000000000008;
-			targetProxy = A1B2C3D40009000000000002;
+			target = A1B2C3D40002000000000008 /* fanhelper */;
+			targetProxy = A1B2C3D40009000000000002 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXContainerItemProxy section */
-		A1B2C3D40009000000000002 = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A1B2C3D40000000000000001;
-			proxyType = 1;
-			remoteGlobalIDString = A1B2C3D40002000000000008;
-			remoteInfo = fanhelper;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin XCBuildConfiguration section */
-		A1B2C3D40004000000000001 = {
+		A1B2C3D40004000000000001 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -416,7 +424,7 @@
 			};
 			name = Debug;
 		};
-		A1B2C3D40004000000000002 = {
+		A1B2C3D40004000000000002 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -468,7 +476,7 @@
 			};
 			name = Release;
 		};
-		A1B2C3D40004000000000003 = {
+		A1B2C3D40004000000000003 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
@@ -478,7 +486,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"wysiwyg/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -491,7 +499,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.4.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wysiwyg.app;
 				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
@@ -502,7 +510,7 @@
 			};
 			name = Debug;
 		};
-		A1B2C3D40004000000000004 = {
+		A1B2C3D40004000000000004 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
@@ -512,7 +520,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_ASSET_PATHS = "\"wysiwyg/Preview Content\"";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -525,7 +533,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.4.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.wysiwyg.app;
 				PRODUCT_BUNDLE_PACKAGE_TYPE = APPL;
@@ -535,7 +543,7 @@
 			};
 			name = Release;
 		};
-		A1B2C3D40004000000000005 = {
+		A1B2C3D40004000000000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
@@ -549,7 +557,7 @@
 			};
 			name = Debug;
 		};
-		A1B2C3D40004000000000006 = {
+		A1B2C3D40004000000000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
@@ -566,34 +574,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A1B2C3D40003000000000001 = {
+		A1B2C3D40003000000000001 /* Build configuration list for PBXProject "wysiwyg" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1B2C3D40004000000000001,
-				A1B2C3D40004000000000002,
+				A1B2C3D40004000000000001 /* Debug */,
+				A1B2C3D40004000000000002 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1B2C3D40003000000000002 = {
+		A1B2C3D40003000000000002 /* Build configuration list for PBXNativeTarget "wysiwyg" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1B2C3D40004000000000003,
-				A1B2C3D40004000000000004,
+				A1B2C3D40004000000000003 /* Debug */,
+				A1B2C3D40004000000000004 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A1B2C3D40003000000000003 = {
+		A1B2C3D40003000000000003 /* Build configuration list for PBXNativeTarget "fanhelper" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				A1B2C3D40004000000000005,
-				A1B2C3D40004000000000006,
+				A1B2C3D40004000000000005 /* Debug */,
+				A1B2C3D40004000000000006 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = A1B2C3D40000000000000001;
+	rootObject = A1B2C3D40000000000000001 /* Project object */;
 }

@@ -108,6 +108,17 @@ struct ContentView: View {
                         if inside { NSCursor.pointingHand.push() }
                         else { NSCursor.pop() }
                     }
+                Text("·")
+                    .font(.system(size: 11))
+                    .foregroundStyle(.tertiary)
+                Link("♥ Support", destination: URL(string: "https://github.com/sponsors/blessingmwiti")!)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundStyle(.blue)
+                    .underline()
+                    .onHover { inside in
+                        if inside { NSCursor.pointingHand.push() }
+                        else { NSCursor.pop() }
+                    }
                 Spacer()
             }
         }
