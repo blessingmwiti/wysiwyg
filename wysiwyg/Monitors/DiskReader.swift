@@ -22,7 +22,7 @@ final class DiskReader {
         var boot: Volume? { volumes.first }
     }
 
-    private var prevBytes: (read: UInt64, written: UInt64, at: Date)?
+    private var prevByID: [UInt64: (read: UInt64, written: UInt64, at: Date)] = [:]
 
     func sample() -> Snapshot {
         let volumes = Self.localVolumes()
@@ -75,35 +75,97 @@ final class DiskReader {
     // MARK: - IO activity (best effort)
 
     private func ioRates() -> (Double?, Double?) {
-        guard let cur = Self.blockStorageBytes() else { return (nil, nil) }
-        defer { prevBytes = (cur.read, cur.written, Date()) }
-        guard let prev = prevBytes else { return (0, 0) }
-        let dt = Date().timeIntervalSince(prev.at)
-        guard dt > 0.05 else { return (0, 0) }
-        let r = cur.read >= prev.read ? Double(cur.read - prev.read) / dt : 0
-        let w = cur.written >= prev.written ? Double(cur.written - prev.written) / dt : 0
+        let objs = Self.counterObjects()
+        guard !objs.isEmpty else { return (nil, nil) }
+        let now = Date()
+        var r = 0.0, w = 0.0, havePrev = false
+        for o in objs {
+            if let p = prevByID[o.id] {
+                let dt = now.timeIntervalSince(p.at)
+                if dt > 0.05 {
+                    // Lifetime counters only move forward; anything else is a
+                    // reset (reboot) — and rebooted entry IDs are new keys.
+                    if o.read >= p.read { r += Double(o.read - p.read) / dt }
+                    if o.written >= p.written { w += Double(o.written - p.written) / dt }
+                    havePrev = true
+                }
+            }
+            prevByID[o.id] = (o.read, o.written, now)
+        }
+        let ids = Set(objs.map(\.id))
+        prevByID = prevByID.filter { ids.contains($0.key) }
+        return havePrev ? (r, w) : (0, 0)
+    }
+
+    /// Whole-disk byte counters, one entry per physical disk.
+    ///
+    /// Method (same as Stats): for each local volume, resolve its BSD node
+    /// (statfs, no extra frameworks), walk up the IORegistry chain, and take
+    /// the topmost ancestor with live Statistics. The level holding
+    /// "Bytes (Read)"/"Bytes (Write)" varies by stack — classic SATA keeps
+    /// them on IOBlockStorageDriver, Apple Silicon APFS keeps them on
+    /// AppleAPFSContainerScheme — so we probe the chain instead of assuming.
+    /// Volumes sharing a disk (APFS volume group) dedupe by entry ID.
+    /// All-zero Statistics (idle virtual drivers) are skipped.
+    private static func counterObjects() -> [(id: UInt64, read: UInt64, written: UInt64)] {
+        var out: [(id: UInt64, read: UInt64, written: UInt64)] = []
+        var seen = Set<UInt64>()
+        for volume in localVolumes() {
+            guard let bsd = bsdName(for: volume.path) else { continue }
+            var svc: io_service_t = 0
+            bsd.withCString { ptr in
+                svc = IOServiceGetMatchingService(kIOMainPortDefault,
+                                                  IOBSDNameMatching(kIOMainPortDefault, 0, ptr))
+            }
+            guard svc != 0 else { continue }
+            var chain: [io_service_t] = [svc]
+            for _ in 0..<10 {
+                var parent: io_registry_entry_t = 0
+                guard IORegistryEntryGetParentEntry(chain.last!, kIOServicePlane, &parent) == KERN_SUCCESS,
+                      parent != 0 else { break }
+                chain.append(parent)
+            }
+            defer { chain.forEach { IOObjectRelease($0) } }
+            // Topmost bearer wins (whole-device aggregate over partitions).
+            for service in chain.reversed() {
+                guard let st = nonzeroStats(of: service),
+                      let id = entryID(of: service),
+                      !seen.contains(id) else { continue }
+                seen.insert(id)
+                out.append((id, st.read, st.written))
+                break
+            }
+        }
+        return out
+    }
+
+    /// Statistics with actual traffic; nil for missing or all-zero counters.
+    private static func nonzeroStats(of service: io_service_t) -> (read: UInt64, written: UInt64)? {
+        var props: Unmanaged<CFMutableDictionary>?
+        guard IORegistryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, 0) == KERN_SUCCESS,
+              let dict = props?.takeRetainedValue() as? [String: Any],
+              let stats = dict["Statistics"] as? [String: Any] else { return nil }
+        let r = (stats["Bytes (Read)"] as? NSNumber)?.uint64Value ?? 0
+        let w = (stats["Bytes (Write)"] as? NSNumber)?.uint64Value ?? 0
+        guard r > 0 || w > 0 else { return nil }
         return (r, w)
     }
 
-    private static func blockStorageBytes() -> (read: UInt64, written: UInt64)? {
-        var read: UInt64 = 0, written: UInt64 = 0, found = false
-        let matching = IOServiceMatching("IOBlockStorageDriver")
-        var iterator: io_iterator_t = 0
-        guard IOServiceGetMatchingServices(kIOMainPortDefault, matching, &iterator) == KERN_SUCCESS else { return nil }
-        defer { IOObjectRelease(iterator) }
-        var service = IOIteratorNext(iterator)
-        while service != 0 {
-            defer { IOObjectRelease(service) }
-            var props: Unmanaged<CFMutableDictionary>?
-            if IORegistryEntryCreateCFProperties(service, &props, kCFAllocatorDefault, 0) == KERN_SUCCESS,
-               let dict = props?.takeRetainedValue() as? [String: Any],
-               let stats = dict["Statistics"] as? [String: Any] {
-                // Keys per IOBlockStorageDriver.h: "Bytes (Read)" / "Bytes (Write)"
-                if let b = stats["Bytes (Read)"] as? NSNumber { read &+= b.uint64Value; found = true }
-                if let b = stats["Bytes (Write)"] as? NSNumber { written &+= b.uint64Value; found = true }
-            }
-            service = IOIteratorNext(iterator)
+    private static func entryID(of service: io_service_t) -> UInt64? {
+        var id: UInt64 = 0
+        guard IORegistryEntryGetRegistryEntryID(service, &id) == KERN_SUCCESS, id != 0 else { return nil }
+        return id
+    }
+
+    /// "/dev/disk3s1s1" for a mount path, via statfs (no extra frameworks).
+    private static func bsdName(for path: String) -> String? {
+        var st = statfs()
+        guard statfs(path, &st) == 0 else { return nil }
+        let size = MemoryLayout.size(ofValue: st.f_mntfromname)
+        let full: String = withUnsafePointer(to: &st.f_mntfromname) {
+            $0.withMemoryRebound(to: CChar.self, capacity: size) { String(cString: $0) }
         }
-        return found ? (read, written) : nil
+        guard full.hasPrefix("/dev/") else { return nil }
+        return String(full.dropFirst("/dev/".count))
     }
 }

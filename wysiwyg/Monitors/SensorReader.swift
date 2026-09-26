@@ -1,13 +1,17 @@
 import Foundation
 import IOKit
 
-/// Temperature + fan readings via AppleSMC. Read-only, no sudo, no helper.
+/// Temperature + fan + power readings via AppleSMC. Read-only, no sudo, no helper.
 ///
 /// What we learned probing real hardware (Apple M5, 2779 SMC keys):
 /// - Intel temps are `sp78` (big-endian fixed point); Apple Silicon temps
 ///   are `flt ` (LITTLE-endian float, e.g. Tp00 = 0x422A8000 = ~42.6°C).
 /// - Key names differ per generation (TC0P on Intel, Tp0x/Tg0x/Ts0x on M5),
 ///   so we discover working keys on first sample and cache them.
+/// - Power meters (watts, `flt `-LE) live under P-keys. PSTR is the
+///   board-level system total (attested by powermetrics-class tooling);
+///   PDTR/PHPC/PHPS/PMVR/PMVC/PPMR/PPBR are workload-correlated rails
+///   (DAC'24) shown under their key names — honest labels, no guessing.
 /// Nothing answers -> `.isAvailable == false` and the UI says so.
 final class SensorReader {
     struct Reading: Equatable, Identifiable {
@@ -15,13 +19,14 @@ final class SensorReader {
         var id: String { label }
         let valueText: String
         let kind: Kind
-        enum Kind { case temp, fan }
+        enum Kind { case temp, fan, power }
     }
 
     struct Snapshot: Equatable {
         let readings: [Reading]
         var temps: [Reading] { readings.filter { $0.kind == .temp } }
         var fans: [Reading] { readings.filter { $0.kind == .fan } }
+        var powers: [Reading] { readings.filter { $0.kind == .power } }
         var isAvailable: Bool { !readings.isEmpty }
     }
 
@@ -43,7 +48,19 @@ final class SensorReader {
     private var cpuKeys: [String]?
     private var gpuKeys: [String]?
     private var fanKeys: [String]?
+    private var powerKeys: [String]?
     private var discoveryDone = false
+
+    /// Friendly names for attested keys; anything else shows its key name.
+    private let powerLabels = ["PSTR": "System"]
+
+    // Power meters validated live on M5 (all `flt `-LE watts at idle:
+    // PSTR 6.7, PDTR ~0, PHPC 4.7, PHPS 3.2, PMVR 8.5, PMVC 8.0,
+    // PPMR 5.5, PPBR 10.8). The M1/M2 set from DAC'24 overlaps, so this
+    // list travels across Apple Silicon; absent keys are skipped.
+    private let powerCandidates = [
+        "PSTR", "PDTR", "PHPC", "PHPS", "PMVR", "PMVC", "PPMR", "PPBR"
+    ]
 
     func sample() -> Snapshot {
         guard let smc = SMCConnection.open() else { return Snapshot(readings: []) }
@@ -54,6 +71,7 @@ final class SensorReader {
             cpuKeys = smc.discoverTemperatureKeys(from: cpuCandidates, max: 8)
             gpuKeys = smc.discoverTemperatureKeys(from: gpuCandidates, max: 6)
             fanKeys = smc.discoverFanKeys()
+            powerKeys = smc.discoverPowerKeys(from: powerCandidates, max: 8)
             discoveryDone = true
         }
 
@@ -67,6 +85,12 @@ final class SensorReader {
             let temps = keys.compactMap { smc.temperature(forKey: $0) }
             if let max = temps.max() {
                 out.append(Reading(label: "GPU", valueText: String(format: "%.0f°C", max), kind: .temp))
+            }
+        }
+        for key in powerKeys ?? [] {
+            if let w = smc.power(forKey: key) {
+                let label = powerLabels[key] ?? key
+                out.append(Reading(label: label, valueText: String(format: "%.1f W", w), kind: .power))
             }
         }
         for (i, key) in (fanKeys ?? []).prefix(2).enumerated() {
@@ -141,6 +165,20 @@ private final class SMCConnection {
 
     func discoverTemperatureKeys(from candidates: [String], max: Int) -> [String] {
         candidates.filter { temperature(forKey: $0) != nil }.prefix(max).map { $0 }
+    }
+
+    /// Power meters in watts (`flt `-LE). Nil if absent or implausible.
+    func power(forKey key: String) -> Double? {
+        guard let val = readKey(key), val.dataSize >= 4, val.dataType == "flt " else { return nil }
+        let b = val.bytes
+        let bits = UInt32(b[0]) | UInt32(b[1]) << 8 | UInt32(b[2]) << 16 | UInt32(b[3]) << 24
+        let w = Double(Float(bitPattern: bits))
+        guard w.isFinite, w >= 0, w < 1500 else { return nil }
+        return w
+    }
+
+    func discoverPowerKeys(from candidates: [String], max: Int) -> [String] {
+        candidates.filter { power(forKey: $0) != nil }.prefix(max).map { $0 }
     }
 
     func discoverFanKeys() -> [String] {

@@ -16,15 +16,15 @@ struct SensorsProcessesView: View {
                     Spacer()
                 }
                 if sensors.isAvailable {
-                    let temps = sensors.temps
-                    if temps.isEmpty {
-                        Text("No temperature sensors exposed — fans live in the Fans card below.")
+                    let chips = sensors.temps + sensors.powers
+                    if chips.isEmpty {
+                        Text("No temperature or power sensors exposed — fans live in the Fans card below.")
                             .font(.system(size: 11)).foregroundStyle(.secondary)
                     } else {
-                        FlowChips(readings: temps)
+                        FlowChips(readings: chips)
                     }
                 } else {
-                    Text("Temperature sensors unavailable on this Mac")
+                    Text("Temperature / power sensors unavailable on this Mac")
                         .font(.system(size: 11)).foregroundStyle(.secondary)
                 }
             }
@@ -68,7 +68,7 @@ private struct FlowChips: View {
         LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 6)], spacing: 6) {
             ForEach(readings) { r in
                 HStack(spacing: 4) {
-                    Image(systemName: r.kind == .temp ? "thermometer" : "fan")
+                    Image(systemName: r.kind == .temp ? "thermometer" : r.kind == .power ? "bolt" : "fan")
                         .font(.system(size: 10))
                     Text("\(r.label) \(r.valueText)")
                         .font(.system(size: 11, weight: .medium)).monospacedDigit()
