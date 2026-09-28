@@ -16,12 +16,16 @@ struct SensorsProcessesView: View {
                     Spacer()
                 }
                 if sensors.isAvailable {
-                    let chips = sensors.temps + sensors.powers
-                    if chips.isEmpty {
+                    if sensors.temps.isEmpty && sensors.powers.isEmpty {
                         Text("No temperature or power sensors exposed — fans live in the Fans card below.")
                             .font(.system(size: 11)).foregroundStyle(.secondary)
                     } else {
-                        FlowChips(readings: chips)
+                        if !sensors.temps.isEmpty {
+                            SensorGroup(title: "Temperature", readings: sensors.temps)
+                        }
+                        if !sensors.powers.isEmpty {
+                            SensorGroup(title: "Power", readings: sensors.powers)
+                        }
                     }
                 } else {
                     Text("Temperature / power sensors unavailable on this Mac")
@@ -62,19 +66,44 @@ struct SensorsProcessesView: View {
     }
 }
 
-private struct FlowChips: View {
+/// One sensor family (Temperature / Power): labeled group with a fixed
+/// two-column grid of uniform chips, so rows always come out even — no
+/// orphans, no ragged adaptive columns. Values right-align per chip.
+private struct SensorGroup: View {
+    let title: String
     let readings: [SensorReader.Reading]
+
+    private let columns = [
+        GridItem(.flexible(), spacing: 6),
+        GridItem(.flexible(), spacing: 6)
+    ]
+
     var body: some View {
-        LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 6)], spacing: 6) {
-            ForEach(readings) { r in
-                HStack(spacing: 4) {
-                    Image(systemName: r.kind == .temp ? "thermometer" : r.kind == .power ? "bolt" : "fan")
-                        .font(.system(size: 10))
-                    Text("\(r.label) \(r.valueText)")
-                        .font(.system(size: 11, weight: .medium)).monospacedDigit()
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(.tertiary)
+                .textCase(.uppercase)
+            LazyVGrid(columns: columns, spacing: 6) {
+                ForEach(readings) { r in
+                    HStack(spacing: 4) {
+                        Image(systemName: r.kind == .temp ? "thermometer" : "bolt")
+                            .font(.system(size: 10))
+                            .frame(width: 14)
+                        Text(r.label)
+                            .font(.system(size: 11, weight: .medium))
+                            .lineLimit(1)
+                        Spacer(minLength: 2)
+                        Text(r.valueText)
+                            .font(.system(size: 11, weight: .semibold))
+                            .monospacedDigit()
+                            .lineLimit(1)
+                    }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 5)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(.tertiary.opacity(0.5), in: Capsule())
                 }
-                .padding(.horizontal, 8).padding(.vertical, 4)
-                .background(.tertiary.opacity(0.5), in: Capsule())
             }
         }
     }
