@@ -249,25 +249,49 @@ final class FanController: ObservableObject {
         }
     }
 
-    /// A few seconds after a successful apply, check the setting actually
-    /// holds — macOS thermal management can reclaim the fan without telling
-    /// us. Reports plainly instead of leaving a silent prompt loop.
+    /// Two-stage verification after a successful apply. Stage 1 (3s): mode
+    /// flips are instant, so a revert to automatic here is a real reclaim
+    /// and reported immediately. Stage 2 (+7s): fans spool up/down over
+    /// seconds — a big jump like 0 → 6550 still reads near 0 at 3s — so a
+    /// slow actual is only reported if it STILL isn't following at 10s.
+    /// A generation token per fan keeps a stale check from firing after
+    /// the user moves on to another change.
+    private var verifyTokens: [Int: Int] = [:]
+
     private func scheduleVerify(for index: Int, expectedRPM: Double) {
+        let token = (verifyTokens[index] ?? 0) + 1
+        verifyTokens[index] = token
         Task { @MainActor [weak self] in
             try? await Task.sleep(nanoseconds: 3_000_000_000)
-            guard let self, let i = self.fans.firstIndex(where: { $0.index == index }) else { return }
-            // Only report if the user hasn't moved on since the apply.
-            guard self.fans[i].mode == .manual, self.fans[i].writeError == nil else { return }
+            guard let self, self.verifyTokens[index] == token,
+                  let i = self.fans.firstIndex(where: { $0.index == index }),
+                  self.fans[i].mode == .manual, self.fans[i].writeError == nil else { return }
             self.refreshKeepingIntent()
             guard let k = self.fans.firstIndex(where: { $0.index == index }) else { return }
             let fan = self.fans[k]
             if let m = fan.firmwareMode, m != 1 {
                 self.fans[k].writeError = "macOS thermal manager switched the fan back to automatic — the manual target was overridden. Tap Apply to re-assert it."
-            } else if let actual = fan.actualRPM,
-                      abs(actual - expectedRPM) > max(400, expectedRPM * 0.2) {
-                self.fans[k].writeError = "Target was written but the fan isn't following it (actual \(Int(actual)) vs target \(Int(expectedRPM))). The firmware may be overriding — try Full speed or re-apply."
+                return
+            }
+            guard let actual = fan.actualRPM,
+                  !Self.isFollowing(actual: actual, target: expectedRPM) else { return }
+            // Still spooling? Give the mechanics time, then judge once.
+            try? await Task.sleep(nanoseconds: 7_000_000_000)
+            guard self.verifyTokens[index] == token,
+                  let j = self.fans.firstIndex(where: { $0.index == index }),
+                  self.fans[j].mode == .manual, self.fans[j].writeError == nil else { return }
+            self.refreshKeepingIntent()
+            guard let l = self.fans.firstIndex(where: { $0.index == index }) else { return }
+            let fan2 = self.fans[l]
+            if let actual2 = fan2.actualRPM,
+               !Self.isFollowing(actual: actual2, target: expectedRPM) {
+                self.fans[l].writeError = "Target was written but the fan isn't following it (actual \(Int(actual2)) vs target \(Int(expectedRPM))). The firmware may be overriding — try Full speed or re-apply."
             }
         }
+    }
+
+    private static func isFollowing(actual: Double, target: Double) -> Bool {
+        abs(actual - target) <= max(400, target * 0.2)
     }
 
     private func quotedForAppleScript(_ s: String) -> String {
